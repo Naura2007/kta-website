@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Anggota ASDI</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="dashboard-page">
+  <header class="dashboard-header">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Logo_ASDI.png" alt="Logo ASDI" class="logo-small">
+    <h1>Dashboard Anggota ASDI - Korwil Madiun</h1>
+  </header>
+
+  <main class="card-container">
+  <div class="id-card">
+    <div class="card-header">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Logo_ASDI.png" alt="Logo ASDI" class="card-logo">
+      <div class="card-title">
+        <h3>Asosiasi Dietisien Indonesia (AsDI)</h3>
+        <p>Korwil Madiun</p>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="photo-section">
+        <img id="foto" src="" alt="Foto Anggota" class="profile-pic">
+      </div>
+      <div class="info-section">
+        <h2 id="nama" class="nama"></h2>
+        <p id="nomor" class="nomor"></p>
+        <p><strong>Instansi:</strong> <span id="instansi"></span></p>
+        <p><strong>Wilayah:</strong> <span id="wilayah"></span></p>
+        <!-- Email sudah dihapus -->
+      </div>
+    </div>
+  </div>
+
+  <button id="logoutBtn" class="logout-btn">Keluar</button>
+</main>
+
+
+  <script>
+    const data = JSON.parse(sessionStorage.getItem("userData"));
+    if (!data) {
+      window.location.href = "index.html";
+    } else {
+      document.getElementById("nama").innerText = data.nama;
+      document.getElementById("foto").src = data.foto;
+      document.getElementById("instansi").innerText = data.instansi;
+      document.getElementById("wilayah").innerText = data.wilayah;
+      document.getElementById("nomor").innerText = "No. Anggota: " + data.nomor_anggota;
+    }
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      sessionStorage.clear();
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>
