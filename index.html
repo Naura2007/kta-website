@@ -7,15 +7,25 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="login-page">
-  <div class="login-container">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Logo_ASDI.png" alt="Logo ASDI" class="logo-login">
-    <h2>Login Anggota ASDI</h2>
-    <p class="subtitle">Korwil Madiun</p>
+  <div class="login-wrapper">
+    
+    <!-- Bagian kiri: Form login -->
+    <div class="login-form-section">
+      <img src="images/Logo-ASDI.png" alt="Logo ASDI" class="logo-login">
+      <h2>Login Anggota ASDI</h2>
+      <p class="subtitle">Korwil Madiun</p>
 
-    <input type="text" id="email" placeholder="Email atau Username" />
-    <input type="password" id="password" placeholder="Nomor Anggota" />
-    <button id="loginBtn">Login</button>
-    <p id="errorMsg"></p>
+      <input type="text" id="email" placeholder="Email atau Username" />
+      <input type="password" id="password" placeholder="Nomor Anggota/password" />
+      <button id="loginBtn">Login</button>
+      <p id="errorMsg"></p>
+    </div>
+
+    <!-- Bagian kanan: Ilustrasi -->
+    <div class="login-image-section">
+      <img src="images/asdi.jpg" alt="Ilustrasi Login" class="login-side-image">
+    </div>
+
   </div>
 
   <script type="module" src="script.js"></script>

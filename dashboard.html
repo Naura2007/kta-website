@@ -6,55 +6,170 @@
   <title>Dashboard Anggota ASDI</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body class="dashboard-page">
   <header class="dashboard-header">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Logo_ASDI.png" alt="Logo ASDI" class="logo-small">
-    <h1>Dashboard Anggota ASDI - Korwil Madiun</h1>
+    <div class="logo-bg">
+      <img src="images/Logo-ASDI.png" alt="Logo ASDI" class="logo-small">
+    </div>
+    <div class="header-text">
+      <h1>Dashboard Anggota ASDI</h1>
+      <p>Korwil Madiun</p>
+    </div>
   </header>
 
-  <main class="card-container">
-  <div class="id-card">
-    <div class="card-header">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Logo_ASDI.png" alt="Logo ASDI" class="card-logo">
-      <div class="card-title">
-        <h3>Asosiasi Dietisien Indonesia (AsDI)</h3>
-        <p>Korwil Madiun</p>
+  <main class="dashboard-center">
+    <div class="id-card-modern">
+      <div class="card-header-modern">
+        <img src="images/logo_korwilMadiun.png" alt="Logo ASDI" class="logo-asdi">
+        <div class="org-info">
+          <h3>Asosiasi Dietisien Indonesia</h3>
+          <p>Korwil Madiun</p>
+        </div>
+      </div>
+
+      <div class="card-body-modern">
+        <div class="photo-box">
+          <img id="foto" src="" alt="Foto Anggota" class="profile-photo">
+        </div>
+
+        <div class="info-box">
+          <h2 id="nama" class="nama"></h2>
+          <p><strong>No. Anggota</strong> : <span id="nomor"></span></p>
+          <p><strong>Instansi</strong> : <span id="instansi"></span></p>
+          <p><strong>Wilayah</strong> : <span id="wilayah"></span></p>
+        </div>
       </div>
     </div>
 
-    <div class="card-body">
-      <div class="photo-section">
-        <img id="foto" src="" alt="Foto Anggota" class="profile-pic">
-      </div>
-      <div class="info-section">
-        <h2 id="nama" class="nama"></h2>
-        <p id="nomor" class="nomor"></p>
-        <p><strong>Instansi:</strong> <span id="instansi"></span></p>
-        <p><strong>Wilayah:</strong> <span id="wilayah"></span></p>
-        <!-- Email sudah dihapus -->
+    <button id="logoutBtn" class="logout-btn">Keluar</button>
+    <button id="changePasswordBtn" class="change-password-btn">Ganti Password</button>
+    <button id="downloadKtaBtn" class="download-btn">Download KTA</button>
+  </main>
+
+  <div id="changePasswordModal" class="modal">
+    <div class="modal-content">
+      <h3>Ganti Password</h3>
+      <input type="password" id="oldPassword" placeholder="Password lama" />
+      <input type="password" id="newPassword" placeholder="Password baru" />
+      <input type="password" id="confirmPassword" placeholder="Konfirmasi password baru" />
+      <p id="changePassMsg"></p>
+      <div class="modal-actions">
+        <button id="savePasswordBtn">Simpan</button>
+        <button id="closeModalBtn">Batal</button>
       </div>
     </div>
   </div>
 
-  <button id="logoutBtn" class="logout-btn">Keluar</button>
-</main>
+  <!-- html2canvas -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+    import { getFirestore, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
-  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyB4Dm7zr7_Q6UrgUIlqP4wMskKTSolT-lY",
+      authDomain: "web-kta-asdi.firebaseapp.com",
+      projectId: "web-kta-asdi",
+      storageBucket: "web-kta-asdi.appspot.com",
+      messagingSenderId: "212623097403",
+      appId: "1:212623097403:web:b97a7ed3af6aed5070a61e",
+      measurementId: "G-2MD17KWVHJ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Ambil data anggota
     const data = JSON.parse(sessionStorage.getItem("userData"));
-    if (!data) {
-      window.location.href = "index.html";
-    } else {
-      document.getElementById("nama").innerText = data.nama;
-      document.getElementById("foto").src = data.foto;
-      document.getElementById("instansi").innerText = data.instansi;
-      document.getElementById("wilayah").innerText = data.wilayah;
-      document.getElementById("nomor").innerText = "No. Anggota: " + data.nomor_anggota;
-    }
+    if (!data) window.location.href = "index.html";
 
+    document.getElementById("nama").innerText = data.nama;
+    document.getElementById("instansi").innerText = data.instansi;
+    document.getElementById("wilayah").innerText = data.wilayah;
+    document.getElementById("nomor").innerText = data.nomor_anggota;
+
+    const foto = document.getElementById("foto");
+
+    // ✅ Gunakan proxy server untuk Cloudinary agar html2canvas bisa download
+    foto.src = `http://localhost:3000/proxy?url=${encodeURIComponent(data.foto)}`;
+
+    // Logout
     document.getElementById("logoutBtn").addEventListener("click", () => {
       sessionStorage.clear();
       window.location.href = "index.html";
+    });
+
+    // Ganti Password
+    const modal = document.getElementById("changePasswordModal");
+    const openBtn = document.getElementById("changePasswordBtn");
+    const closeBtn = document.getElementById("closeModalBtn");
+    const saveBtn = document.getElementById("savePasswordBtn");
+    const msg = document.getElementById("changePassMsg");
+
+    openBtn.addEventListener("click", () => {
+      modal.style.display = "flex";
+      msg.textContent = "";
+    });
+    closeBtn.addEventListener("click", () => modal.style.display = "none");
+
+    saveBtn.addEventListener("click", async () => {
+      const oldP = document.getElementById("oldPassword").value;
+      const newP = document.getElementById("newPassword").value;
+      const confirmP = document.getElementById("confirmPassword").value;
+
+      if (oldP !== data.password) {
+        msg.textContent = "Password lama salah!";
+        msg.style.color = "red";
+        return;
+      }
+      if (newP !== confirmP) {
+        msg.textContent = "Konfirmasi tidak cocok!";
+        msg.style.color = "red";
+        return;
+      }
+
+      try {
+        const userRef = doc(db, "anggota", data.id);
+        await updateDoc(userRef, { password: newP });
+        data.password = newP;
+        sessionStorage.setItem("userData", JSON.stringify(data));
+        msg.textContent = "Password berhasil diubah!";
+        msg.style.color = "green";
+        setTimeout(() => modal.style.display = "none", 1500);
+      } catch (err) {
+        console.error(err);
+        msg.textContent = "Gagal memperbarui password!";
+        msg.style.color = "red";
+      }
+    });
+
+    // Download KTA
+    document.getElementById("downloadKtaBtn").addEventListener("click", async () => {
+      const card = document.querySelector(".id-card-modern");
+      if (!card) return alert("Kartu KTA belum muncul!");
+
+      const btn = document.getElementById("downloadKtaBtn");
+      btn.textContent = "Menyimpan...";
+      btn.disabled = true;
+
+      // Tunggu foto termuat
+      if (!foto.complete) await new Promise(r => { foto.onload = r; foto.onerror = r; });
+
+      html2canvas(card, { scale: 3, useCORS: true }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = `${data.nama.replace(/\s+/g, "_")}_KTA_ASDI.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+        btn.textContent = "Download KTA";
+        btn.disabled = false;
+      }).catch(err => {
+        console.error(err);
+        alert("Terjadi kesalahan saat membuat KTA");
+        btn.textContent = "Download KTA";
+        btn.disabled = false;
+      });
     });
   </script>
 </body>

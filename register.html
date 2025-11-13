@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daftar Anggota ASDI</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="login-page">
+  <div class="login-wrapper">
+    <div class="login-form-section">
+      <img src="images/Logo-ASDI.png" alt="Logo ASDI" class="logo-login">
+      <h2>Form Pendaftaran</h2>
+      <p class="subtitle">Anggota Baru ASDI Korwil Madiun</p>
+
+      <input type="text" id="nama" placeholder="Nama Lengkap (beserta gelar)" required />
+      <input type="email" id="email" placeholder="Email" required />
+      
+      <select id="wilayah" required>
+        <option value="">Pilih Wilayah</option>
+        <option value="Madiun 1">Madiun 1</option>
+        <option value="Madiun 2">Madiun 2</option>
+        <option value="Magetan">Magetan</option>
+        <option value="Ngawi">Ngawi</option>
+        <option value="Ponorogo">Ponorogo</option>
+        <option value="Pacitan">Pacitan</option>
+      </select>
+
+      <input type="text" id="instansi" placeholder="Instansi" required />
+      <input type="password" id="password" placeholder="buat passwordmu" required />
+      <input type="file" id="foto" accept="image/*" placeholder="Foto 3x4" required />
+
+      <button id="daftarBtn">Daftar</button>
+      <p id="registerMsg"></p>
+    </div>
+
+    <div class="login-image-section">
+      <img src="images/asdi.jpg" class="login-side-image">
+    </div>
+  </div>
+
+<script>
+  const scriptURL = "https://script.google.com/macros/s/AKfycbwq-S_WN4iQisyS0RrBkrORugYNXjmK2UTsJnJCehY_P4YSIUPHYL_NUKzp-S7vXWcf9g/exec"; 
+
+  document.getElementById("daftarBtn").addEventListener("click", async () => {
+    const nama = document.getElementById("nama").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const wilayah = document.getElementById("wilayah").value.trim();
+    const instansi = document.getElementById("instansi").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const fotoFile = document.getElementById("foto").files[0];
+    const msg = document.getElementById("registerMsg");
+
+    if (!nama || !email || !wilayah || !instansi || !password) {
+      msg.textContent = "Semua data wajib diisi!";
+      msg.style.color = "red";
+      return;
+    }
+
+    msg.textContent = "Mengirim data...";
+    msg.style.color = "black";
+
+    let fotoBase64 = "";
+    if (fotoFile) {
+      const reader = new FileReader();
+      reader.onload = async function() {
+        fotoBase64 = reader.result;
+        await kirimData();
+      };
+      reader.readAsDataURL(fotoFile);
+    } else {
+      await kirimData();
+    }
+
+    async function kirimData() {
+      try {
+        const body = { nama, email, wilayah, instansi, password, foto: fotoBase64 };
+        const res = await fetch(scriptURL, {
+          method: "POST",
+          body: JSON.stringify(body),
+          headers: { "Content-Type": "application/json" },
+        });
+        const result = await res.json();
+
+        if (result.success) {
+          msg.style.color = "green";
+          msg.innerHTML = `✅ Pendaftaran berhasil!<br>Nomor Anggota Anda: <b>${result.nomor_anggota}</b><br>Gunakan nomor ini dan password Anda untuk login.`;
+        } else {
+          msg.textContent = "❌ Gagal mendaftar!";
+          msg.style.color = "red";
+        }
+      } catch (err) {
+        console.error(err);
+        msg.textContent = "⚠️ Terjadi kesalahan saat mengirim data!";
+        msg.style.color = "red";
+      }
+    }
+  });
+</script>
+  </body>
+</html>

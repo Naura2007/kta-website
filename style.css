@@ -1,89 +1,143 @@
-/* ===== DASHBOARD STYLE ===== */
-body.dashboard-page {
-  background: linear-gradient(135deg, #0b2b5c, #133d7a);
-  color: white;
-  font-family: 'Poppins', sans-serif;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-}
-
-/* Header */
-.dashboard-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background-color: #0b2b5c;
-  width: 100%;
-  padding: 15px 25px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  position: sticky;
-  top: 0;
-}
-
-.logo-small {
-  width: 50px;
-  height: 50px;
-}
-
-.dashboard-header h1 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #fff;
-}
-
-/* Kartu Identitas */
-.card-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+/* ===== KARTU ID FINAL BIRU-KUNING (FULL DESAIN) ===== */
+.id-card-modern {
+  width: 430px;
+  max-width: 95vw;
+  border-radius: 18px;
+  overflow: hidden;
+  background: white;
+  border: 3px solid #0b2b5c;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
   margin-top: 40px;
+  position: relative;
+  transition: 0.3s ease;
 }
 
-.id-card {
-  background: #f9f9f9;
-  color: #222;
-  border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  width: 360px;
-  padding: 20px;
-  border: 4px solid #0b2b5c;
+/* dekorasi diagonal biru-kuning */
+.id-card-modern::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 120px;
+  height: 30px;
+  background: linear-gradient(135deg, #fdd835 0%, #0b2b5c 90%);
+  clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+}
+
+.id-card-modern::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 140px;
+  height: 25px;
+  background: linear-gradient(135deg, #0b2b5c 0%, #fdd835 80%);
+  clip-path: polygon(15% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.id-card-modern:hover {
+  transform: scale(1.02);
+}
+
+/* HEADER */
+.card-header-modern {
+  background: linear-gradient(90deg, #0b2b5c 0%, #133d7a 90%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 15px 20px;
   position: relative;
 }
 
-.card-top {
-  display: flex;
-  align-items: center;
-  gap: 20px;
+.card-header-modern::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: #fdd835;
 }
 
-.profile-pic {
-  width: 110px;
-  height: 130px;
+.logo-asdi {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid white;
+  object-fit: cover;
+  background: white;
+  margin-right: 15px;
+}
+
+.org-info h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.org-info p {
+  margin: 2px 0 0 0;
+  font-size: 13px;
+}
+
+/* BODY */
+.card-body-modern {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: linear-gradient(180deg, #ffffff 60%, #f2f4f7 100%);
+  padding: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+/* FOTO */
+.photo-box {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-photo {
+  width: 120px;
+  height: 150px;
+  border: 3px solid #0b2b5c;
   border-radius: 8px;
   object-fit: cover;
-  border: 2px solid #0b2b5c;
+  background: #f0f0f0;
 }
 
-.info-section {
-  flex: 1;
+/* INFORMASI */
+.info-box {
+  flex: 1.5;
+  font-size: 14px;
+  min-width: 180px;
 }
 
-.nama {
-  font-size: 1.2em;
+.info-box h2 {
   color: #0b2b5c;
-  margin-bottom: 5px;
-}
-
-.nomor {
-  font-weight: bold;
+  font-size: 17px;
+  font-weight: 700;
+  border-bottom: 3px solid #fdd835;
+  display: inline-block;
   margin-bottom: 10px;
+  padding-bottom: 2px;
 }
 
-/* Tombol Logout */
+.info-box p {
+  font-size: 13px;
+  color: #333;
+  margin: 6px 0;
+  line-height: 1.4;
+}
+
+.info-box strong {
+  color: #0b2b5c;
+}
+
+/* LOGOUT BUTTON */
 .logout-btn {
   margin-top: 25px;
   padding: 10px 20px;
@@ -124,8 +178,8 @@ body.login-page {
 }
 
 .logo-login {
-  width: 80px;
-  margin-bottom: 15px;
+  width: 100px;
+  margin-bottom: 10px;
 }
 
 h2 {
@@ -246,4 +300,547 @@ button:hover {
   font-weight: bold;
   margin-bottom: 8px;
   font-size: 13px;
+}
+
+.id-card-modern {
+  width: 420px;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+  font-family: 'Poppins', sans-serif;
+  border: 3px solid #0b2b5c;
+}
+
+.card-header-modern {
+  background: linear-gradient(90deg, #0b2b5c, #133d7a);
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+}
+
+.logo-asdi {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid white;
+  margin-right: 10px;
+}
+
+.org-info h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+.org-info p {
+  margin: 0;
+  font-size: 13px;
+}
+
+.card-body-modern {
+  display: flex;
+  background: linear-gradient(180deg, #ffffff 60%, #f2f4f7 100%);
+  padding: 15px;
+}
+
+.photo-box {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.profile-photo {
+  width: 110px;
+  height: 140px;
+  border: 3px solid #0b2b5c;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.info-box {
+  flex: 2;
+  margin-left: 15px;
+}
+.info-box h2 {
+  color: #0b2b5c;
+  font-size: 16px;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #fdd835;
+  display: inline-block;
+}
+.info-box p {
+  font-size: 13px;
+  color: #333;
+  margin: 5px 0;
+}
+.info-box strong {
+  color: #0b2b5c;
+}
+
+/* ===== HEADER DASHBOARD ===== */
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  background: linear-gradient(90deg, #0b2b5c, #133d7a);
+  width: 100%;
+  padding: 15px 25px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  color: white;
+}
+
+.logo-small {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: white;
+  padding: 5px;
+}
+
+.header-text h1 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.header-text p {
+  margin: 2px 0 0 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  background: linear-gradient(90deg, #0b2b5c, #133d7a);
+  width: 100%;
+  padding: 15px 25px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  color: white;
+  position: sticky;
+  top: 0;
+}
+
+.logo-bg {
+  background: white;
+  border-radius: 50%;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-small {
+  width: 60px;
+  height: 60px;
+}
+
+.header-text h1 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.header-text p {
+  margin: 2px 0 0 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.dashboard-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 120px);
+  gap: 20px;
+}
+
+.id-card-modern {
+  width: 420px;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+  font-family: 'Poppins', sans-serif;
+  border: 3px solid #0b2b5c;
+}
+
+.logout-btn {
+  width: 420px;
+  padding: 12px 0;
+  background: #0b2b5c;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.3s;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.logout-btn:hover {
+  background: #133d7a;
+  transform: scale(1.03);
+}
+
+
+body.dashboard-page {
+  background: linear-gradient(135deg,#ffffff, #ffffff);
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* HEADER */
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  background: linear-gradient(90deg, #0b2b5c, #133d7a);
+  width: 100%;
+  padding: 15px 25px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  color: white;
+}
+
+.logo-bg {
+  background: white;
+  border-radius: 50%;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-small {
+  width: 60px;
+  height: 60px;
+}
+
+.header-text h1 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.header-text p {
+  margin: 2px 0 0 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* BIAR KARTU DI TENGAH TEPAT */
+.dashboard-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* vertikal tengah */
+  align-items: center;       /* horizontal tengah */
+  gap: 20px;
+  padding-bottom: 40px;
+}
+
+/* KARTU */
+.id-card-modern {
+  width: 420px;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+  font-family: 'Poppins', sans-serif;
+  border: 3px solid #0b2b5c;
+}
+
+/* TOMBOL KELUAR */
+.logout-btn {
+  width: 420px;
+  padding: 12px 0;
+  background: #0b2b5c;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.3s;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.logout-btn:hover {
+  background: #133d7a;
+  transform: scale(1.03);
+}
+
+.dashboard-header {
+  border-bottom: 4px solid #fdd835;
+}
+
+/* ===== LOGIN BARU (SPLIT DESIGN) ===== */
+.login-wrapper {
+  display: flex;
+  width: 900px;
+  max-width: 95vw;
+  height: 550px;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+
+.login-form-section {
+  flex: 1;
+  padding: 40px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: white;
+}
+
+.login-image-section {
+  flex: 1;
+  background: linear-gradient(135deg, #0b2b5c, #e0ecff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-side-image {
+  width: 80%;
+  max-width: 350px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+/* form tetap rapi */
+.login-form-section input, 
+.login-form-section button {
+  width: 100%;
+  max-width: 280px;
+}
+
+/* responsif */
+@media (max-width: 768px) {
+  .login-wrapper {
+    flex-direction: column;
+    height: auto;
+  }
+  .login-image-section {
+    display: none;
+  }
+}
+
+/* ===== Modal Ganti Password ===== */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 25px 30px;
+  border-radius: 12px;
+  width: 320px;
+  text-align: center;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+}
+
+.modal-content input {
+  width: 100%;
+  margin: 8px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.modal-actions button {
+  flex: 1;
+  margin: 0 5px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+}
+
+#savePasswordBtn {
+  background: #0b2b5c;
+}
+#closeModalBtn {
+  background: #888;
+}
+
+.change-password-btn {
+  width: 420px;
+  padding: 10px;
+  background: #fdd835;
+  color: #0b2b5c;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.3s;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.change-password-btn:hover {
+  background: #fbe451;
+  transform: scale(1.03);
+}
+
+/* Styling input dalam modal */
+.modal input[type="password"] {
+  width: 100%;
+  padding: 10px 12px;
+  margin: 8px 0;
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  box-sizing: border-box;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+/* Saat fokus di input (klik mengetik) */
+.modal input[type="password"]:focus {
+  border-color: #2b4eff;  /* warna biru elegan */
+  box-shadow: 0 0 5px rgba(43, 78, 255, 0.3);
+}
+
+/* ===== RESPONSIVE FIX UNTUK TAMPILAN HP ===== */
+@media (max-width: 768px) {
+  body.dashboard-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: auto;
+    background: #ffffff;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    text-align: center;
+    padding: 12px 10px;
+    gap: 8px;
+    box-sizing: border-box;
+  }
+
+  .dashboard-header .logo-bg {
+    padding: 6px;
+  }
+
+  .dashboard-header .logo-small {
+    width: 50px;
+    height: 50px;
+  }
+
+  .header-text h1 {
+    font-size: 18px;
+  }
+
+  .header-text p {
+    font-size: 13px;
+  }
+
+  .dashboard-center {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+    padding: 0 10px 40px 10px;
+    box-sizing: border;
+  }
+
+  .id-card-modern {
+    width: 100%;
+    max-width: 380px;
+    margin: 0 auto;
+    padding-bottom: 20px;
+  }
+
+  .card-header-modern {
+    flex-direction: row;
+    padding: 10px;
+  }
+
+  .logo-asdi {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+  }
+
+  .info-box {
+    font-size: 12px;
+  }
+
+  .profile-photo {
+    width: 100px;
+    height: 130px;
+  }
+
+  .logout-btn,
+  .change-password-btn {
+    width: 100%;
+    max-width: 360px;
+    font-size: 14px;
+    margin-top: 12px;
+  }
+
+  .modal-content {
+    width: 90%;
+    max-width: 300px;
+  }
+}
+
+.footer-card {
+  background: #ffcc00; /* warna kuning */
+  height: 20px; /* tambahkan tinggi sedikit */
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+  margin-top: 0; /* supaya nyambung langsung, gak ada celah putih */
+}
+
+.download-btn {
+  width: 420px;
+  padding: 12px 0;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.3s;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  margin-bottom: 15px;
+}
+
+.download-btn:hover {
+  background: #2ecc71;
+  transform: scale(1.03);
 }

@@ -1,6 +1,6 @@
 // Import Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, query, where, updateDoc, doc } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
 // Konfigurasi Firebase
 const firebaseConfig = {
@@ -25,28 +25,30 @@ loginBtn.addEventListener("click", async () => {
   const errorMsg = document.getElementById("errorMsg");
 
   errorMsg.textContent = "Memeriksa data...";
-  
-  try {
-    const querySnapshot = await getDocs(collection(db, "anggota"));
-    let userFound = false;
 
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
+  try {
+    // Ambil semua anggota
+    const querySnapshot = await getDocs(collection(db, "anggota"));
+    let foundUser = null;
+
+    querySnapshot.forEach((docSnap) => {
+      const user = docSnap.data();
       if (
-        (data.email === emailInput || data.nomor_anggota === emailInput) &&
-        data.password === passwordInput
+        (user.email === emailInput || user.nomor_anggota === emailInput) &&
+        user.password === passwordInput
       ) {
-        userFound = true;
-        sessionStorage.setItem("userData", JSON.stringify(data));
-        window.location.href = "dashboard.html";
+        foundUser = { ...user, id: docSnap.id };
       }
     });
 
-    if (!userFound) {
-      errorMsg.textContent = "Email atau nomor anggota salah!";
+    if (foundUser) {
+      sessionStorage.setItem("userData", JSON.stringify(foundUser));
+      window.location.href = "dashboard.html";
+    } else {
+      errorMsg.textContent = "Email / nomor anggota atau password salah!";
     }
   } catch (error) {
-    errorMsg.textContent = "Terjadi kesalahan koneksi.";
     console.error(error);
+    errorMsg.textContent = "Terjadi kesalahan koneksi.";
   }
 });
