@@ -133,8 +133,9 @@
       const originalSrc = document.getElementById("foto").src;
 
       // ⚡ Ganti <PROJECT-NAME> dengan nama project Vercelmu
-      const proxyUrl = `https://kta-website-49yl.vercel.app/api/proxy?url=${encodeURIComponent(data.foto)}`;
-
+      const baseURL = window.location.origin;
+      const proxyUrl = `${baseURL}/api/proxy?url=${encodeURIComponent(data.foto)}`;
+      
       try {
         // Load foto via proxy
         await new Promise((resolve,reject)=>{
