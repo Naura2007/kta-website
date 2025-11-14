@@ -6,6 +6,7 @@
   <title>Dashboard Anggota ASDI</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body class="dashboard-page">
   <header class="dashboard-header">
     <div class="logo-bg">
@@ -61,6 +62,7 @@
     </div>
   </div>
 
+  <!-- Library html2canvas -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
   <script type="module">
@@ -80,27 +82,33 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+    // Ambil data sessionStorage
     const data = JSON.parse(sessionStorage.getItem("userData"));
     if (!data) window.location.href = "index.html";
 
     document.getElementById("nama").innerText = data.nama;
-    document.getElementById("foto").src = data.foto?.trim();
     document.getElementById("instansi").innerText = data.instansi;
     document.getElementById("wilayah").innerText = data.wilayah;
     document.getElementById("nomor").innerText = data.nomor_anggota;
 
+    // Logout
     document.getElementById("logoutBtn").addEventListener("click", () => {
       sessionStorage.clear();
       window.location.href = "index.html";
     });
 
+    // Ganti Password
     const modal = document.getElementById("changePasswordModal");
     const openBtn = document.getElementById("changePasswordBtn");
     const closeBtn = document.getElementById("closeModalBtn");
     const saveBtn = document.getElementById("savePasswordBtn");
     const msg = document.getElementById("changePassMsg");
 
-    openBtn.addEventListener("click", () => { modal.style.display = "flex"; msg.textContent = ""; });
+    openBtn.addEventListener("click", () => {
+      modal.style.display = "flex";
+      msg.textContent = "";
+    });
+
     closeBtn.addEventListener("click", () => modal.style.display = "none");
 
     saveBtn.addEventListener("click", async () => {
@@ -108,69 +116,77 @@
       const newP = document.getElementById("newPassword").value;
       const confirmP = document.getElementById("confirmPassword").value;
 
-      if (oldP !== data.password) { msg.textContent="Password lama salah!"; msg.style.color="red"; return; }
-      if (newP !== confirmP) { msg.textContent="Konfirmasi tidak cocok!"; msg.style.color="red"; return; }
+      if (oldP !== data.password) {
+        msg.textContent = "Password lama salah!";
+        msg.style.color = "red";
+        return;
+      }
+      if (newP !== confirmP) {
+        msg.textContent = "Konfirmasi tidak cocok!";
+        msg.style.color = "red";
+        return;
+      }
 
       try {
-        const userRef = doc(db,"anggota",data.id);
-        await updateDoc(userRef,{password:newP});
-        data.password=newP;
-        sessionStorage.setItem("userData",JSON.stringify(data));
-        msg.textContent="Password berhasil diubah!"; msg.style.color="green";
-        setTimeout(()=>modal.style.display="none",1500);
-      } catch(err) { console.error(err); msg.textContent="Gagal memperbarui password!"; msg.style.color="red"; }
+        const userRef = doc(db, "anggota", data.id);
+        await updateDoc(userRef, { password: newP });
+
+        data.password = newP;
+        sessionStorage.setItem("userData", JSON.stringify(data));
+
+        msg.textContent = "Password berhasil diubah!";
+        msg.style.color = "green";
+        setTimeout(() => modal.style.display = "none", 1500);
+      } catch (err) {
+        console.error(err);
+        msg.textContent = "Gagal memperbarui password!";
+        msg.style.color = "red";
+      }
     });
 
-    // Fungsi load image agar html2canvas aman
-    function loadImage(url) {
-      return new Promise((resolve,reject)=>{
-        const img = new Image();
-        img.crossOrigin = "anonymous";
-        img.src = url;
-        if(img.complete) resolve(img);
-        else { img.onload=()=>resolve(img); img.onerror=reject; }
-      });
-    }
+    // Download KTA
+    const foto = document.getElementById("foto");
+    const proxyUrl = `https://kta-website-kcvbc1s7j-naura-rossas-projects.vercel.app/api/proxy?url=${encodeURIComponent(data.foto)}`;
 
-  document.getElementById("downloadKtaBtn").addEventListener("click", async () => {
-  const card = document.querySelector(".id-card-modern");
-  const btn = document.getElementById("downloadKtaBtn");
-  btn.disabled = true;
-  btn.textContent = "Menyimpan...";
+    document.getElementById("downloadKtaBtn").addEventListener("click", () => {
+      const card = document.querySelector(".id-card-modern");
+      const btn = document.getElementById("downloadKtaBtn");
+      btn.disabled = true;
+      btn.textContent = "Menyimpan...";
 
-  const originalSrc = document.getElementById("foto").src;
-  // ⚡ Ganti <PROJECT-NAME> dengan nama project Vercelmu
-  const proxyUrl = `https://kta-website-kcvbc1s7j-naura-rossas-projects.vercel.app/api/proxy?url=${encodeURIComponent(data.foto)}`;
+      const originalSrc = foto.src;
+      foto.src = proxyUrl;
 
-  try {
-    // Load foto via proxy
-    await new Promise((resolve, reject) => {
-      const img = new Image();
-      img.crossOrigin = "anonymous";
-      img.src = proxyUrl;
-      img.onload = resolve;
-      img.onerror = reject;
+      foto.onload = () => {
+        html2canvas(card, { scale: 3, useCORS: true }).then(canvas => {
+          const link = document.createElement("a");
+          link.download = `${data.nama.replace(/\s+/g, "_")}_KTA_ASDI.png`;
+          link.href = canvas.toDataURL("image/png");
+          link.click();
+
+          btn.textContent = "Download KTA";
+          btn.disabled = false;
+          foto.src = originalSrc;
+        }).catch(err => {
+          console.error(err);
+          alert("Gagal membuat KTA");
+          btn.textContent = "Download KTA";
+          btn.disabled = false;
+          foto.src = originalSrc;
+        });
+      };
+
+      foto.onerror = () => {
+        alert("Gagal memuat foto anggota untuk KTA");
+        btn.textContent = "Download KTA";
+        btn.disabled = false;
+        foto.src = originalSrc;
+      };
     });
 
-    document.getElementById("foto").src = proxyUrl;
+    // Tampilkan foto di dashboard
+    foto.src = proxyUrl;
 
-    const canvas = await html2canvas(card, { scale: 3, useCORS: true });
-    const link = document.createElement("a");
-    link.href = canvas.toDataURL("image/png");
-    link.download = `${data.nama.replace(/\s+/g, "_")}_KTA_ASDI.png`;
-    link.click();
-
-    document.getElementById("foto").src = originalSrc;
-    btn.disabled = false;
-    btn.textContent = "Download KTA";
-
-  } catch (err) {
-    console.error(err);
-    alert("Gagal memuat foto anggota untuk KTA");
-    btn.disabled = false;
-    btn.textContent = "Download KTA";
-  }
-});
   </script>
 </body>
 </html>
