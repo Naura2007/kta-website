@@ -68,7 +68,7 @@
     btn.textContent = "Menyimpan...";
 
     const originalSrc = document.getElementById("foto").src;
-    const proxyUrl = `https://<PROJECT-NAME>.vercel.app/api/proxy?url=${encodeURIComponent(data.foto)}`;
+    const proxyUrl = `https://kta-website-49yl.vercel.app/api/proxy?url=${encodeURIComponent(data.foto)}`;
 
     const fotoEl = document.getElementById("foto");
     fotoEl.src = proxyUrl;
